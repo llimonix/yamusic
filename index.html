@@ -18,26 +18,18 @@
     <div id="ipInfo"></div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Запрос к API
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "https://api.ipify.org?format=json", true);
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    var ipInfo = JSON.parse(xhr.responseText);
+        function handleResponse(response) {
+            // Отображение информации на странице
+            var ipInfoContainer = document.getElementById("ipInfo");
+            ipInfoContainer.innerHTML = `
+                <p>IP Address: ${response}</p>
+            `;
+        }
 
-                    // Отображение информации на странице
-                    var ipInfoContainer = document.getElementById("ipInfo");
-                    ipInfoContainer.innerHTML = `
-                        <p>IP Address: ${ipInfo.ip}</p>
-                        <p>City: ${ipInfo.location.city}</p>
-                        <p>Region: ${ipInfo.location.region}</p>
-                        <p>Country: ${ipInfo.location.country}</p>
-                    `;
-                }
-            };
-            xhr.send();
-        });
+        // Создаем скрипт для JSONP
+        var script = document.createElement('script');
+        script.src = 'https://api.ipify.org?format=json';
+        document.body.appendChild(script);
     </script>
 
 </body>
