@@ -18,18 +18,23 @@
     <div id="ipInfo"></div>
 
     <script>
-        function handleResponse(response) {
-            // Отображение информации на странице
-            var ipInfoContainer = document.getElementById("ipInfo");
-            ipInfoContainer.innerHTML = `
-                <p>IP Address: ${response}</p>
-            `;
-        }
+        document.addEventListener("DOMContentLoaded", function () {
+            // Запрос к API
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "https://api.ipify.org?format=json", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var ipInfo = JSON.parse(xhr.responseText);
 
-        // Создаем скрипт для JSONP
-        var script = document.createElement('script');
-        script.src = 'https://api.ipify.org?format=json';
-        document.body.appendChild(script);
+                    // Отображение информации на странице
+                    var ipInfoContainer = document.getElementById("ipInfo");
+                    ipInfoContainer.innerHTML = `
+                        <p>IP Address: ${ipInfo}</p>
+                    `;
+                }
+            };
+            xhr.send();
+        });
     </script>
 
 </body>
